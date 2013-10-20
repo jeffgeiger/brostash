@@ -1,0 +1,5 @@
+source "http://rubygems.org"
+gem "sinatra"
+gem "bson_ext"
+gem "mandrill-api"
+gem "json"
