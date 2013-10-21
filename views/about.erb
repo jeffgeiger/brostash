@@ -36,8 +36,8 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="/about">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -50,21 +50,7 @@
         <p class="lead">Paste in headers from your Bro logs and get grok filters and a sample logstash config.</p>
       </div>
       <div class="col-md-12">
-
-
-<form role="form" method="POST" action="produce">
-  <div class="form-group">
-    <pre>
-cd /your/bro/current/log/dir
-grep -E "^#fields" *.log
-</pre>
-    <label for="broFields">Bro Fields</label>
-    <textarea class="form-control" name="broFields" id="broFields" placeholder="Paste your Bro #fields lines (output from above command)"></textarea>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-
+You're trying to parse Bro logs with Logstash, but every time someone changes the Bro config and adds a new field, your grok patterns fall apart.  Luckily, thanks to the tab delimiter and the <i>#fields</i> line in the header, Bro logs are stupid easy to parse to generate a new Logstash config on the fly.  Hopefully this makes it even easier. 
 
       </div>
 

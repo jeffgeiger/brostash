@@ -36,7 +36,7 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -45,27 +45,26 @@
 
     <div class="container">
 
-      <div class="starter-template">
-        <h1>Bro -> Logstash Generator</h1>
-        <p class="lead">Paste in headers from your Bro logs and get grok filters and a sample logstash config.</p>
-      </div>
       <div class="col-md-12">
+	<pre>
 
-
-<form role="form" method="POST" action="produce">
-  <div class="form-group">
-    <pre>
-cd /your/bro/current/log/dir
-grep -E "^#fields" *.log
-</pre>
-    <label for="broFields">Bro Fields</label>
-    <textarea class="form-control" name="broFields" id="broFields" placeholder="Paste your Bro #fields lines (output from above command)"></textarea>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-
-
+<%
+fieldData = broFields.to_s.split("\n")
+fieldData.each do |line|
+  _, file_name, fields = /(?<file_name>.+)\:#fields\s(?<fields>.+)/.match(line).to_a
+  _, logname = /(?<logname>.+)\.log/.match(file_name).to_a
+  logname.upcase!
+  grokdata = "BRO#{logname} "
+  fields.split("\t").each do |fieldname|
+    grokdata = "#{grokdata}%{DATA:#{fieldname}}\\t"
+  end
+%>
+<%= file_name %> - <%= logname %><br/><%= grokdata %>
+<!--<%= fields %> /-->
+<%
+end
+%>
+	</pre>
       </div>
 
     </div><!-- /.container -->

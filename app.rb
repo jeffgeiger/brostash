@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'mandrill'
 require 'pp'
 #require 'mongo_mapper'
 
