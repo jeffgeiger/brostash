@@ -50,8 +50,25 @@
         <p class="lead">Paste in headers from your Bro logs and get grok filters and a sample logstash config.</p>
       </div>
       <div class="col-md-12">
-You're trying to parse Bro logs with Logstash, but every time someone changes the Bro config and adds a new field, your grok patterns fall apart.  Luckily, thanks to the tab delimiter and the <i>#fields</i> line in the header, Bro logs are stupid easy to parse to generate a new Logstash config on the fly.  Hopefully this makes it even easier. 
-
+<p>You're trying to parse Bro logs with Logstash, but every time someone changes the Bro config and adds a new field, your grok patterns fall apart.  Luckily, thanks to the tab delimiter and the <i>#fields</i> line in the header, Bro logs are stupid easy to parse and generate a new Logstash config on the fly.  Hopefully this makes it easier.</p> 
+<p>This is primarily intended as test application.  If it burns down your house, kills your house plants, or leaves stains on your rug, I sincerely apologize. Please don't sue me.</p>
+<p>Here is some sample field data to try:</p>
+<pre>
+capture_loss.log:#fields	ts	ts_delta	peer	gaps	acks	percent_lost
+communication.log:#fields	ts	peer	src_name	connected_peer_desc	connected_peer_addr	connected_peer_port	level	message
+conn.log:#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	service	duration	orig_bytes	resp_bytes	conn_state	local_orig	missed_bytes	history	orig_pkts	orig_ip_bytes	resp_pkts	resp_ip_bytes	tunnel_parents	sensorname	orig_cc	resp_cc	orig_asn	resp_asn	orig_cc	resp_cc
+dhcp.log:#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	mac	assigned_ip	lease_time	trans_id
+dns.log:#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	TTLs	rejected
+files.log:#fields	ts	fuid	tx_hosts	rx_hosts	conn_uids	source	depth	analyzers	mime_type	filename	duration	local_orig	is_orig	seen_bytes	total_bytes	missing_bytes	overflow_bytes	timedout	parent_fuid	md5	sha1	sha256	extracted
+http.log:#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	trans_depth	method	host	uri	referrer	user_agent	request_body_len	response_body_len	status_code	status_msg	info_code	info_msg	filename	tags	username	password	proxied	orig_fuids	orig_mime_types	resp_fuids	resp_mime_types	client_header_names	server_header_names	cookie_vars	uri_vars
+known_hosts.log:#fields	ts	host
+known_services.log:#fields	ts	host	port_num	port_proto	service
+reporter.log:#fields	ts	level	message	location
+smtp.log:#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	trans_depth	helo	mailfrom	rcptto	date	from	to	reply_to	msg_id	in_reply_to	subject	x_originating_ip	first_received	second_received	last_reply	path	user_agent	fuids	is_webmail
+software.log:#fields	ts	host	host_p	software_type	name	version.major	version.minor	version.minor2	version.minor3	version.addl	unparsed_version	url
+stats.log:#fields	ts	peer	mem	pkts_proc	events_proc	events_queued	lag	pkts_recv	pkts_dropped	pkts_link
+weird.log:#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	name	addl	notice	peer
+</pre>
       </div>
 
     </div><!-- /.container -->

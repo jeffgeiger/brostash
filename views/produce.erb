@@ -44,26 +44,61 @@
     </div>
 
     <div class="container">
-
+      <div class="starter-template">
+        <h1>Bro -> Logstash Generator</h1>
+      </div>
       <div class="col-md-12">
-	<pre>
 
 <%
+grokSyntax = ""
+ls_Filter = ""
+ls_Input = ""
 fieldData = broFields.to_s.split("\n")
 fieldData.each do |line|
   _, file_name, fields = /(?<file_name>.+)\:#fields\s(?<fields>.+)/.match(line).to_a
   _, logname = /(?<logname>.+)\.log/.match(file_name).to_a
   logname.upcase!
   grokdata = "BRO#{logname} "
-  fields.split("\t").each do |fieldname|
-    grokdata = "#{grokdata}%{DATA:#{fieldname}}\\t"
+  fields.split("\s").each do |fieldname|
+    grokdata = "#{grokdata}%{DATA:#{fieldname.downcase}}\\t"
   end
-%>
-<%= file_name %> - <%= logname %><br/><%= grokdata %>
-<!--<%= fields %> /-->
-<%
+  grokSyntax = "#{grokSyntax}#{grokdata.chomp('\t')}\n"
+
+  ls_Input = "#{ls_Input}
+input {
+  file {
+    path => [ \"/path/to/bro/current/#{file_name}\" ] # array (required)
+    type => \"bro_#{logname.downcase}\" # string (optional)
+  }
+}
+"
+  ls_Filter = "#{ls_Filter}
+filter{
+  grok {
+    type => \"bro_#{logname.downcase}\"
+    patterns_dir => \"/opt/logstash/patterns\"
+    break_on_match => false
+    pattern => \"%{BRO#{logname}}\"
+    add_tag => \"bro#{logname.downcase}\"
+  }
+}
+"
 end
 %>
+	<h3>Grok Patterns</h3>
+	<pre>
+<%= grokSyntax %>
+	</pre>
+
+	<h3>Logstash Input Syntax</h3>
+	<p>Change the path to your Bro log files.</p>
+	<pre>
+<%= ls_Input %>
+	</pre>
+	<h3>Logstash Filter Syntax</h3>
+	<p>Change the filter path to match your install.</p>
+	<pre>
+<%= ls_Filter %>
 	</pre>
       </div>
 
