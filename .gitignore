@@ -3,7 +3,6 @@ routes/admin.rb
 config/settings.yml
 views/admin.erb
 views/download.erb
-README.md
 views/index.orig.erb
 views/mandrill.erb
 views/login.erb
